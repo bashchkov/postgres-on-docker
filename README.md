@@ -1,3 +1,6 @@
+# PostgreSQL on Docker
+The PostgreSQL object-relational database system provides reliability and data integrity.
+
 #### Example docker-compose.yml for postgres:
 ```yaml
 version: "3"
