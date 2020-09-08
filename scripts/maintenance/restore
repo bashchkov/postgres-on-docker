@@ -30,7 +30,8 @@ if [[ ! -f "${backup_filename}" ]]; then
     exit 1
 fi
 
-message_welcome "Restoring the '${POSTGRES_DB}' database from the '${backup_filename}' backup..."
+
+message_welcome "Restoring the '${POSTGRES_DB}' database from the '${backup_filename}' backup. cv   xcv.."
 
 if [[ "${POSTGRES_USER}" == "postgres" ]]; then
     message_error "Restoring as 'postgres' user is not supported. Assign 'POSTGRES_USER' env with another one and try again."
@@ -44,12 +45,13 @@ export PGPASSWORD="${POSTGRES_PASSWORD}"
 export PGDATABASE="${POSTGRES_DB}"
 
 message_info "Dropping the database..."
-dropdb "${PGDATABASE}"
+#dropdb "${POSTGRES_DB}"
+dropdb -U "${POSTGRES_USER}" "${POSTGRES_DB}"
 
 message_info "Creating a new database..."
 createdb --owner="${POSTGRES_USER}"
 
 message_info "Applying the backup to the new database..."
-gunzip -c "${backup_filename}" | psql "${POSTGRES_DB}"
+gunzip -c "${backup_filename}" | psql -U "${POSTGRES_USER}" -d "${POSTGRES_DB}"
 
 message_success "The '${POSTGRES_DB}' database has been restored from the '${backup_filename}' backup."
